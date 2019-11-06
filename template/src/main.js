@@ -5,7 +5,7 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
-import store form './store'
+import store from './store'
 import "babel-polyfill"
 
 Vue.config.productionTip = false
