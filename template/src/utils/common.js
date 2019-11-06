@@ -1,13 +1,5 @@
-import axios from 'axios'
-import store from '../store'
-import { getOpenid, callBack } from '../api/index'
-
-axios.defaults.timeout = 10000
-axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8'
-axios.defaults.baseURL = process.env.API_ROOT
-
 // 是否是微信浏览器
-const isWeiXin = function () {
+export function isWeiXin () {
   let ua = window.navigator.userAgent.toLowerCase()
   if (ua.match(/micromessenger/i) == 'micromessenger') {
     return true
@@ -17,7 +9,7 @@ const isWeiXin = function () {
 }
 
 // 是否是千帆app
-const isQianfan = function () {
+export function isQianfan () {
   let ua = window.navigator.userAgent.toLowerCase()
   if (ua.toLowerCase().search('qianfan') !== -1) {
     return true
@@ -27,13 +19,13 @@ const isQianfan = function () {
 }
 
 // 是否是移动端
-const isIphone = function () {
+export function isIphone () {
   if (navigator.userAgent.match(/(iPhone|iPod|Android|ios)/i)) {
     return true
   }
 }
 
-const isAndroid = function () {
+export function isAndroid  () {
   var u = navigator.userAgent
   var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Linux') > -1
   if (isAndroid) {
@@ -44,7 +36,7 @@ const isAndroid = function () {
 }
 
 let loadedJs = []
-const loadJs = async function (url) {
+export async function loadJs(url) {
   return new Promise((resolve, reject) => {
     if (loadedJs.indexOf(url) > -1) {
       resolve()
@@ -66,7 +58,7 @@ const loadJs = async function (url) {
 }
 
 // moblink 跳页面
-const loadMobJs = async function (url, className, params = {}) {
+export async function  loadMobJs(url, className, params = {}) {
   let mobKey = store.state.siteInfo.mob_key
   // console.log(url)
   // console.log(mobKey)
@@ -86,7 +78,7 @@ const loadMobJs = async function (url, className, params = {}) {
   }
 }
 
-const schemeUrlToRouter = function (direct) {
+export function schemeUrlToRouter (direct) {
   if(isQianfan()) {
     return direct
   }
@@ -211,203 +203,9 @@ const schemeUrlToRouter = function (direct) {
   return url
 }
 
-// 通过moblink跳转链接
-const jumpLink = function (url, need, nowUrl) {
-  // 判断是否登录，没有登录，跳登录的弹框
-  // 登录后查看 0无需先登录 1需要先登录
-  if (need === 0) {
-    publicLink(url)
-  } else {
-    if (store.state.isGuest) {
-      let ua = window.navigator.userAgent.toLowerCase()
-      if (ua.match(/MicroMessenger/i) && ua.match(/MicroMessenger/i)[0] === 'micromessenger') {
-        if (store.state.siteInfo.is_allow_wap) {
-          wxGrant(nowUrl, 'register')
-        } else {
-          wxGrant(nowUrl, 'login')
-        }
-      } else {
-        wxGrant(nowUrl, 'login')
-      }
-    } else {
-      publicLink(url)
-    }
-  }
-  return false
-}
 
-const publicLink = function (url) {
-  let direct = schemeUrlToRouter(url)
-  if (direct === '') {
-      // 弹窗跳出，初始化moblink
-    store.commit('updateDialog', true)
-    loadMobJs(url, 'goBind')
-  } else {
-    window.location.href = direct
-  }
-}
 
-// 跳转弹框
-const wxGrant = function (url, type) {
-  // console.log(store.state.siteInfo)
-  // 是否开启引导下载
-  if (!store.state.siteInfo.is_allow_interactive) {
-    let ua = window.navigator.userAgent.toLowerCase()
-    if (ua.match(/MicroMessenger/i) && ua.match(/MicroMessenger/i)[0] === 'micromessenger') {
-      console.log('在微信中')
-      // 在微信浏览器  先授权 再登录
-      if (store.state.siteInfo.is_allow_wap) {
-        if (store.state.isGuest) {
-          console.log('是游客')
-          // 未登录,有unioind去授权，没有就去登录
-          if (localStorage.getItem('unionid') && localStorage.getItem('bearerToken')) {
-            // 老用户
-            console.log('老用户')
-            if (type === 'register') {
-              isBearerToken()
-            }
-            store.commit('updateGuest', false)
-          } else if (localStorage.getItem('unionid')) {
-            console.log('已授权')
-            store.commit('updateWeixin', true)
-            store.commit('updateLayers', true)
-            // store.commit('updateJumpRegister', true)
-            // 是否开启绑定账户
-            if (store.state.siteInfo.mobile_bind) {
-              store.commit('updateJumpRegister', true)
-            } else {
-              store.commit('updateProfile', true)
-            }
-          } else {
-            console.log('准备授权')
-            let postObj = {}
-            postObj.url = url
-            postObj.unionid = localStorage.getItem('unionid')
-
-            getOpenid(postObj).then(function (res) {
-              var data = res.data.data
-              console.log(data)
-              if (res.data.ret === 0) {
-                // 授权 判断登录成功
-                console.log('授权 判断登录成功')
-                if (data.BearToken && data.BearToken !== '') {
-                  // 登录成功
-                  console.log('登录成功')
-                  localStorage.setItem('bearerToken', data.BearToken)
-                  if (type === 'register') {
-                    isBearerToken()
-                  }
-                  store.commit('updateGuest', false)
-                } else {
-                  window.location.href = data.url
-                }
-              } else {
-                this.showToast(true, 'text', res.data.txt, '6em')
-              }
-            })
-          }
-        }
-      } else {
-        store.commit('updateWeixin', false)
-        store.commit('updateLayers', true)
-        if (type === 'register') {
-          store.commit('updateJumpRegister', true)
-        } else {
-          store.commit('updateJumpLogin', true)
-        }
-      }
-    } else {
-      // 不是微信浏览器 账户密码登录
-      store.commit('updateWeixin', false)
-      store.commit('updateLayers', true)
-      if (type === 'register') {
-        store.commit('updateJumpRegister', true)
-      } else {
-        store.commit('updateJumpLogin', true)
-      }
-    }
-  } else {
-    loadMobJs(url, 'moblink')
-  }
-}
-
-// 检查是否登录
-const checkLogin = function (code) {
-  console.log(localStorage.getItem('updateType'))
-  // let type = Number(localStorage.getItem('updateType')) // 0 登录 1 注册
-  let postObj = {}
-  postObj.code = code
-  callBack(postObj).then(function (res) {
-    console.log(res)
-    var data = res.data.data
-    if (res.data.ret === 0) {
-      if (data.nickname !== '') {
-        store.commit('updateName', data.nickname)
-      }
-      if (data.unionid !== '') {
-        localStorage.setItem('unionid', data.unionid)
-      }
-      if (localStorage.getItem('unionid')) {
-        if (data.BearToken && data.BearToken !== '') {
-            // 微信授权 并且 登录成功了
-          localStorage.setItem('bearerToken', data.BearToken)
-          isBearerToken()
-          store.commit('updateGuest', false)
-        } else {
-          store.commit('updateWeixin', true)
-          store.commit('updateLayers', true)
-          // store.commit('updateJumpRegister', true)
-          if (store.state.siteInfo.is_allow_wap) {
-            if (store.state.siteInfo.mobile_bind) {
-              store.commit('updateJumpRegister', true)
-            } else {
-              store.commit('updateProfile', true)
-            }
-          }
-        }
-      }
-    }
-  })
-}
-
-//检查是否登录(针对于分类)
-const checkFenleiLogin = function (code) {
-  let postObj = {}
-  postObj.code = code
-  callBack(postObj).then(function (res) {
-      var data = res.data.data
-      if (res.data.ret === 0) {
-          if (data.nickname !== '') {
-              store.commit('updateName', data.nickname)
-          }
-          if (data.unionid !== '') {
-              store.commit('updateUnionid', data.unionid)
-              localStorage.setItem('unionid', data.unionid)
-          }
-          if (store.state.unionid) {
-              if (data.BearToken && data.BearToken !== '') {
-                  // 微信授权 并且 登录成功了
-                  localStorage.setItem('bearerToken', data.BearToken)
-                  store.dispatch('analysisBearToken',data.BearToken)
-              } else {
-                  store.commit('updateShowWxLayer', true)
-                  store.commit('updateJumpRegister',true)
-                  if (store.state.siteInfo.is_allow_wap) {
-                      if (store.state.siteInfo.mobile_bind) {
-                          store.commit('updateJumpRegister', true)
-                          store.commit('updateMobile', true)
-                      } else {
-                          store.commit('updateProfile', true)
-                      }
-                  }
-              }
-          }
-      }
-  })
-}
-
-const isBearerToken = function () {
-  console.log(123)
+export function isBearerToken () {
   if (localStorage.getItem('bearerToken') && localStorage.getItem('bearerToken') !== 'undefined') {
     console.log('user')
     let token = localStorage.getItem('bearerToken')
@@ -426,10 +224,42 @@ const isBearerToken = function () {
   }
 }
 
-const decodeBase64Content = function (base64Content) {
+export function decodeBase64Content(base64Content) {
   let commonContent = base64Content.replace(/\s/g, '+')
   commonContent = Buffer.from(commonContent, 'base64').toString()
   return commonContent
 }
 
-export { isWeiXin, isQianfan, isIphone, loadJs, loadMobJs, schemeUrlToRouter, jumpLink, wxGrant, checkLogin,checkFenleiLogin, isBearerToken, isAndroid }
+
+// 获取cookie、
+export function getCookie (name) {
+  let reg = new RegExp('(^|)' + name + '=([^;]*)(;|$)')
+  let arr = document.cookie.match(reg)
+  if (arr) {
+    return (arr[2])
+  } else {
+    return null
+  }
+}
+
+// 设置cookie,增加到vue实例方便全局调用
+export function setCookie (cName, value, time) {
+  let exdate = new Date()
+  exdate.setTime(exdate.getTime() + time * 1000)
+  console.log(exdate.toUTCString())
+  document.cookie = cName + '=' + escape(value) + ';expires=' + exdate.toUTCString()
+}
+
+//获取url参数值
+export function getUrlParam (name) {
+  var reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)') // 构造一个含有目标参数的正则表达式对象
+  var r = window.location.search.substr(1).match(reg) // 匹配目标参数
+  if (r !== null) {
+    // console.log(unescape(r[2]))
+    return unescape(r[2])
+  } else {
+    return null
+  } // 返回参数值
+}
+
+

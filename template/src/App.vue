@@ -1,24 +1,21 @@
 <template>
   <div id="app">
     <img src="./assets/logo.png">
-    {{#router}}
     <router-view/>
-    {{else}}
-    <HelloWorld/>
-    {{/router}}
+    <noLogin v-show="$store.state.showNoLogin"></noLogin>
+    <commonError v-show="$store.state.errorMessage !== ''"></commonError>
   </div>
 </template>
 
 <script>
-{{#unless router}}
-import HelloWorld from './components/HelloWorld'
-
-{{/unless}}
+import noLogin from '@/components/common/noLogin'
+import commonError from '@/components/common/error'
 export default {
-  name: 'App'{{#router}}{{else}},
+  name: 'App',
   components: {
-    HelloWorld
-  }{{/router}}
+    noLogin,
+    commonError
+  }
 }
 </script>
 

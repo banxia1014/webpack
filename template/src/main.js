@@ -4,18 +4,30 @@
 {{/if_eq}}
 import Vue from 'vue'
 import App from './App'
-{{#router}}
 import router from './router'
-{{/router}}
+import store form './store'
+import "babel-polyfill"
 
 Vue.config.productionTip = false
+Vue.prototype.$store = store
+
+// 全局钩子
+router.beforeEach((to, from, next) => {
+  /* 将登录之后存在本地的bearerToken提交到store*/
+  if (localStorage.getItem('bearerToken') && localStorage.getItem('bearerToken') !== 'undefined') {
+    let token = localStorage.getItem('bearerToken')
+    store.dispatch('analysisBearToken', token)
+  }
+  /*--end--*/
+  next()
+})
+
 
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
-  {{#router}}
   router,
-  {{/router}}
+  store,
   {{#if_eq build "runtime"}}
   render: h => h(App)
   {{/if_eq}}

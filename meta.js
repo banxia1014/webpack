@@ -69,16 +69,6 @@ module.exports = {
         },
       ],
     },
-    router: {
-      when: 'isNotTest',
-      type: 'confirm',
-      message: 'Install vue-router?',
-    },
-    vuex: {
-      when: 'isNotTest',
-      type: 'confirm',
-      message: 'Install vuex?'
-    },
     lint: {
       when: 'isNotTest',
       type: 'confirm',
