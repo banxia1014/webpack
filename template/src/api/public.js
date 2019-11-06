@@ -37,11 +37,19 @@ axios.interceptors.response.use(function(response){
   }
 })
 
-// 传参结构之一
-const getJson = function () {
+// 客户端传参接口
+export function appParams() {
   let obj = { }
   obj.params = data
   let postData = { }
   postData.data = JSON.stringify(obj)
   return qs.stringify(postData)
 }
+
+// wap传参结构
+export function wapParams() {
+  let postData = { }
+  postData.data = JSON.stringify(data)
+  return qs.stringify(postData)
+}
+
