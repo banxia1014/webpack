@@ -1,0 +1,405 @@
+$blue: #3190e8;
+$bc: #e4e4e4;
+$fc:#fff;
+.middle{
+  display:inline-block;
+  vertical-align:middle;
+}
+.top{display:inline-block; vertical-align:top;}
+
+@mixin middle{
+  display:inline-block;
+  vertical-align:middle;
+}
+
+// 背景图片地址和大小
+@mixin bis($url) {
+  background-image: url($url);
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+}
+
+//圆角边框
+@mixin borderRadius($radius) {
+  -webkit-border-radius: $radius;
+  -moz-border-radius: $radius;
+  -ms-border-radius: $radius;
+  -o-border-radius: $radius;
+  border-radius: $radius;
+}
+
+@mixin borderRadiusAll($radius1,$radius2,$radius3,$radius4) {
+  -webkit-border-radius: $radius1 $radius2 $radius3 $radius4;
+  -moz-border-radius: $radius1 $radius2 $radius3 $radius4;
+  -ms-border-radius: $radius1 $radius2 $radius3 $radius4;
+  -o-border-radius: $radius1 $radius2 $radius3 $radius4;
+  border-radius: $radius1 $radius2 $radius3 $radius4;
+}
+
+//定位全屏
+@mixin allcover{
+  position:absolute;
+  top:0;
+  right:0;
+}
+
+//定位上下左右居中
+@mixin center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+//定位上下居中
+@mixin ct {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+//宽高
+@mixin wh($width, $height){
+  width: $width;
+  height: $height;
+}
+
+//宽高 行高
+@mixin whl($width, $height, $line-height){
+  width: $width;
+  height: $height;
+  line-height: $line-height;
+}
+
+//字体大小、行高、字体
+@mixin font($size, $line-height, $family: 'Microsoft YaHei') {
+  font: #{$size}/#{$line-height} $family;
+}
+
+
+//字体大小，颜色
+@mixin sc($size, $color){
+  font-size: $size;
+  color: $color;
+}
+
+//flex 布局和 子元素 对其方式
+@mixin fj($type: space-between){
+  display: flex;
+  justify-content: $type;
+}
+
+
+/*定位*/
+@mixin positioncover($position, $top, $right, $bottom, $left){
+  position: $position;
+  top: $top;
+  right: $right;
+  bottom: $bottom;
+  left: $left;
+}
+
+@mixin transform($scalex, $scaley){
+  transform: scale($scalex, $scaley);
+  -webkit-transform: scale($scalex, $scaley);
+  -o-transform: scale($scalex, $scaley);
+  -moz-transform: scale($scalex, $scaley);
+  -ms-transform: scale($scalex, $scaley);
+}
+
+@mixin backimg($url,$backsizex,$backsizey) {
+  background-image: url($url);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: $backsizex $backsizey;
+}
+
+@mixin backimg1($url,$position,$backsizex,$backsizey) {
+  background-image: url($url);
+  background-position: $position;
+  background-repeat: no-repeat;
+  background-size: $backsizex $backsizey;
+}
+
+@mixin background_set{
+  background-position: center center;
+  background-size: cover;
+}
+
+//margin
+@mixin ma($top, $right,$bottom,$left){
+  margin: $top $right $bottom $left;
+}
+//margin左右
+@mixin mlr($left,$right){
+  margin-left:$left;
+  margin-right: $right;
+}
+//margin上下
+@mixin mtb($top,$bottom){
+  margin-top:$top;
+  margin-bottom: $bottom;
+}
+//padding
+@mixin pa($top,$right,$bottom,$left){
+  padding: $top $right $bottom $left;
+}
+//padding左右
+@mixin plr($left,$right){
+  padding-left:$left;
+  padding-right: $right;
+}
+//padding上下
+@mixin ptb($top,$bottom){
+  padding-top:$top;
+  padding-bottom: $bottom;
+}
+//行高
+@mixin h-line($height,$line){
+  height:$height;
+  line-height:$line;
+}
+//最大最小宽度
+@mixin mmw($max,$min){
+  max-width: $max;
+  min-width: $min;
+}
+//背景颜色和透明度
+@mixin rgba($color,$opacity:1){
+  background: $color;
+  opacity: $opacity;
+  -webkit-opacity: $opacity;
+  -o-opacity: $opacity;
+  -moz-opacity: $opacity;
+  -ms-opacity: $opacity;
+}
+@mixin opacity($opacity){
+  opacity: $opacity;
+  -webkit-opacity: $opacity;
+  -o-opacity: $opacity;
+  -moz-opacity: $opacity;
+  -ms-opacity: $opacity;
+}
+//absolute 上 左
+@mixin pa-tl($top,$left){
+  position: absolute;
+  top:$top;
+  left: $left;
+}
+//absolute 上 右
+@mixin pa-tr($top,$right){
+  position: absolute;
+  top:$top;
+  right: $right;
+}
+//absolute  右下
+@mixin pa-rb($right,$bottom){
+  position: absolute;
+  right:$right;
+  bottom: $bottom;
+}
+//absolute  右上
+@mixin pa-rt($right,$top){
+  position: absolute;
+  right:$right;
+  top: $top;
+}
+//absolute 左下
+@mixin pa-lb($left,$bottom){
+  position: absolute;
+  left:$left;
+  bottom: $bottom;
+}
+
+//超出截断
+@mixin overflow(){
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
+// 0.5px全边框
+@mixin s-border($color,$radius:2){
+  position: relative;
+  &:after{
+    content: "";/* 注意这里为双引号 */
+    position: absolute; left:0; top:0;
+    width: 200%;
+    height: 200%;
+    border: 1px solid $color;
+    -webkit-transform-origin: 0 0;
+    -moz-transform-origin: 0 0;
+    -ms-transform-origin: 0 0;
+    -o-transform-origin: 0 0;
+    transform-origin: 0 0;
+    -webkit-transform: scale(0.5, 0.5);
+    -ms-transform: scale(0.5, 0.5);
+    -o-transform: scale(0.5, 0.5);
+    transform: scale(0.5, 0.5);
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    -webkit-border-radius: $radius;
+    -moz-border-radius: $radius;
+    -ms-border-radius: $radius;
+    -o-border-radius: $radius;
+    border-radius: $radius;
+  }
+}
+
+//下边框
+@mixin border-b($width,$color){
+  position: relative;
+  &:after{
+    content: '';
+    position: absolute;
+    bottom:0;
+    width: $width;
+    border:1px solid $color;
+    left: 50%;
+    transform: translateX(-50%);
+    -webkit-transform: translateX(-50%);
+    -o-transform: translateX(-50%);
+    -moz-transform: translateX(-50%);
+    -ms-transform: translateX(-50%);
+  }
+}
+
+//左边框 0.5px
+@mixin border-l2($color){
+  position: relative;
+  &:before{
+    position: absolute;
+    content: '';
+    width: 1px;
+    left: 0;
+    bottom: 0;
+    height: 100%;
+    background-color: $color;
+    -webkit-transform: scale(.5,1);
+    transform: scale(.5,1);
+    -webkit-transform-origin: left bottom;
+    transform-origin: left bottom;
+  }
+}
+
+//右边框 0.5px
+@mixin border-r2($color){
+  position: relative;
+  &:before{
+    position: absolute;
+    content: '';
+    width: 1px;
+    right: 0;
+    bottom: 0;
+    height: 100%;
+    background-color: $color;
+    -webkit-transform: scale(.5,1);
+    transform: scale(.5,1);
+    -webkit-transform-origin: right bottom;
+    transform-origin: right bottom;
+  }
+}
+
+//下边框 0.5px
+@mixin border-b1($color){
+  position: relative;
+  &:after{
+    position: absolute;
+    content: '';
+    height: 1px;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    background-color: $color;
+    -webkit-transform: scale(1,.5);
+    transform: scale(1,.5);
+    -webkit-transform-origin: left bottom;
+    transform-origin: left bottom;
+  }
+}
+
+//垂直居中
+@mixin middle-center() {
+  content: '';
+  position: absolute;
+  left:50%;
+  top:50%;
+  transform: translate(-50%,-50%);
+  -webkit-transform: translate(-50%,-50%);
+  -o-transform: translate(-50%,-50%);
+  -moz-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+}
+// 超过行数 显示点点点
+@mixin line-num ($line) {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: $line;
+  -webkit-box-orient: vertical;
+}
+
+@mixin author-images {
+   @for $i from 1 through 12{
+     .headerBg#{$i} {
+         background-image: url('../../assets/images/bg_#{$i}.jpg')
+     }
+   }
+}
+
+//设置placherlo的字体颜色
+@mixin placeholder-set($color,$size){
+  input::-webkit-input-placeholder {
+    color: $color;
+    font-size: $size;
+  }
+
+  input:-moz-placeholder {
+    color: $color;
+    font-size: $size;
+  }
+
+  input::-moz-placeholder {
+    color: $color;
+    font-size: $size;
+  }
+
+  input:-ms-input-placeholder {
+    color: $color;
+    font-size: $size;
+  }
+}
+
+//210背景色
+@mixin imageTxtMiddle{
+  $color:#FBFAE8 #F9EEF1 #EEF9F8 #EDFBEA;
+  .imageTxtMiddle{
+    @each $c in $color{
+      $i:index($color,$c);
+      &:nth-child(#{$i}){//+1是除了第一个以外的li
+        background: #{nth($color,$i)};
+        @if $i < 3 {
+          margin-top: 0;
+        }
+      }
+    }
+  }
+}
+
+@mixin roleFont {
+  font-family:PingFang SC;
+  color: #FFFFFF;
+}
+
+//217 背景色
+@mixin nameBg{
+  $border:#F9DFDF #E7E8EB #C8EAF9 #FBEBB9;
+  $bg:#FCEEED #F5F5F5 #E2F2FC #FDF5DB;
+  @for $i from 1 to length($border) + 1 {
+    .name#{$i}{
+      border:.01rem solid #{nth($border, $i)};
+      background: #{nth($bg, $i)};
+    }
+  }
+}

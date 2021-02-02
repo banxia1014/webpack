@@ -2,14 +2,21 @@ import axios from 'axios'
 import qs from 'qs'
 import { isQianfan } from '../utils/common'
 import store from '../store'
+import url from '../utils/Url'
 
-axios.defaults.timeout = 10000 // 超时10s
-axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8'
-axios.defaults.baseURL = process.env.API_ROOT
-
+// 创建axios实例
+const service = axios.create({
+	baseURL: process.env.API_ROOT,
+	timeout: 10000, // 超时10s
+	headers: {
+		post:{
+			'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
+		}
+	}
+})
 
 // 添加请求拦截器
-axios.interceptors.request.use(config => {
+service.interceptors.request.use(config => {
   // 在请求头里面塞beartoken
   if (store.state.bearToken &&!isQianfan()) {
     config.headers.Authorization = 'Bearer ' + store.state.bearToken
@@ -21,7 +28,7 @@ axios.interceptors.request.use(config => {
 })
 
 // 响应时拦截
-axios.interceptors.response.use(function(response){
+service.interceptors.response.use(function(response){
   return response
 },function(error){
   if(error&&error.response) {
@@ -37,19 +44,21 @@ axios.interceptors.response.use(function(response){
   }
 })
 
-// 客户端传参接口
-export function appParams() {
-  let obj = { }
+// wap传参结构
+export function getJson(data) {
+  let obj = {}
   obj.params = data
-  let postData = { }
-  postData.data = JSON.stringify(obj)
-  return qs.stringify(postData)
+  let post_data = {}
+  post_data.data = JSON.stringify(obj)
+  return qs.stringify(post_data)
 }
 
-// wap传参结构
-export function wapParams() {
-  let postData = { }
-  postData.data = JSON.stringify(data)
-  return qs.stringify(postData)
+export function get(postUrl, params) {
+	return service.get(url.getPath(postUrl), params)
 }
+
+export function post(postUrl, params) {
+	return service.post(postUrl, getJson(params))
+}
+
 

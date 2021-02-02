@@ -1,0 +1,99 @@
+/*reset*/
+body, ul, ol, li, p, h1, h2, h3, h4, h5, h6, form, fieldset, table, td, img, div {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+body {
+  margin: 0 auto;
+  max-width: 750px;
+  word-break: break-all;
+  font-family: arial,sans-serif,"Microsoft YaHei",STHeiti,"Droid Sans Fallback",sans-serif;
+  cursor: pointer;
+  font-size: .3rem;
+  background: #ffffff;
+}
+
+ul, ol {
+  list-style-type: none;
+}
+
+select, input, img, select {
+  vertical-align: middle;
+}
+
+a {
+  text-decoration: none;
+}
+
+a.clear_color:link{color:#494949;}
+a.clear_color:visited{color:#494949;}
+a.clear_color:hover{color:#494949;}
+a.clear_color:active{color:#494949;}
+
+* {
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+.clear {
+  *zoom: 1;
+}
+
+.clear:before, .clear:after {
+  display: table;
+  content: "";
+  line-height: 0;
+}
+
+.clear:after {
+  clear: both;
+}
+
+ul, li, ol {
+  list-style-type: none;
+}
+
+.jz {
+  width: 100%;
+  height: 100%;
+  overflow-y: hidden;
+  z-index: -300;
+}
+
+.fl {
+  float: left;
+}
+
+.fr {
+  float: right;
+}
+
+.ellipsis{
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.tc{ text-align: center;}
+.white{ background: #fff;}
+.pr{ position: relative;}
+.pa{ position: absolute;}
+.mt20{ margin-top: .2rem;}
+.mt10{ margin-top: .1rem;}
+.mlr50{ margin-left: .5rem; margin-right: .5rem;}
+.plr28{ padding: 0 .28rem;}
+.fs0{ font-size: 0;}
+.pb50{padding-bottom: 4rem;}
+.pb0{ padding-bottom: 0;}
+input{
+  box-shadow:0px 0px 0px rgba(0,0,0,0);
+  -webkit-appearance:none;
+  margin: 0;
+  border: 0;
+  padding: 0;
+}
+
+.tr{
+  text-align: right;
+}
