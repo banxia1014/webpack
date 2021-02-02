@@ -5,7 +5,8 @@
 			<!--登录-->
 			<div class="common_box middle" v-show="isJumpLogin">
 				<div class="nav">
-					<p class="title">登录</p>
+					<p class="title" v-if="isJumpLogin && !isWeixin">登录</p>
+					<p class="title" v-else>账户密码绑定</p>
 				</div>
 				<div class="">
 					<ul class="info_area">
@@ -90,7 +91,8 @@
 			<!--第二步绑定手机号-->
 			<div class="common_box middle" id="mobile_box" v-show="isMobile">
 				<div class="nav">
-					<p class="title">{{ isJumpRegister && !isWeixin ? '注册' : '请输入您的手机号' }}</p>
+					<p class="title" v-if="isJumpRegister && !isWeixin">注册</p>
+					<p class="title" v-else>请输入您的手机号</p>
 				</div>
 
 				<div class="">
@@ -141,9 +143,8 @@
 				</div>
 
 				<div class="btn_line clearfix">
-					<span class="complete" @click="Continue">{{
-						isJumpRegister && !isWeixin ? '注册' : '下一步'
-					}}</span>
+					<span class="complete" @click="Continue" v-if="isJumpRegister && !isWeixin">注册</span>
+					<span class="complete" @click="Continue" v-else>下一步</span>
 				</div>
 			</div>
 
