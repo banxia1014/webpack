@@ -3,7 +3,7 @@
     <router-view/>
     <noLogin v-show="$store.state.showNoLogin"></noLogin>
     <commonError v-show="$store.state.errorMessage !== ''"></commonError>
-	<login></login>
+	<!-- <login></login> -->
 	<wxLogin></wxLogin>
 	<Dialog :showDialog="$store.state.showDialog"></Dialog>
   </div>
