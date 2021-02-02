@@ -20,7 +20,10 @@ export default {
   },
   methods:{
 	test(){
-		this.CheckLoginAndBindPhone()
+		let callBack = function(){
+			console.log(1)
+		}
+		this.CheckLoginAndBindPhone(true,callBack,callBack)
 	}
   }
 }
