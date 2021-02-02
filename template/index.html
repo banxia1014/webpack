@@ -1,10 +1,44 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <title>{{ name }}</title>
-  </head>
+      <meta name="save" content="history" />
+      <meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+      <meta name="format-detection" content="telephone=no" />
+      <!--<meta http-equiv="cache-control" content="max-age=60">-->
+      <!-- HTTP 1.1 -->
+      <meta http-equiv="pragma" content="no-cache">
+      <!-- HTTP 1.0 -->
+      <meta http-equiv="cache-control" content="no-cache">
+      <!-- Prevent caching at the proxy server -->
+      <meta http-equiv="expires" content="0">
+      <meta name="apple-mobile-web-app-capable" content="yes" />
+      <meta name="apple-mobile-web-app-status-bar-style" content="blank" />
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+      <meta charset="utf-8">
+      <title></title>
+      <style>html {font-size: 312.5%;}</style>
+      <script type="text/javascript">
+        var docEl = document.documentElement,
+          //当设备的方向变化（设备横向持或纵向持）此事件被触发。绑定此事件时，
+          //注意现在当浏览器不支持orientationChange事件的时候我们绑定了resize 事件。
+          //总来的来就是监听当前窗口的变化，一旦有变化就需要重新设置根字体的值
+          resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize',
+          recalc = function () {
+            //设置根字体大小1:50适用于375的设计稿，需要变更，就更改基础字体的数值
+  //          if(docEl.clientWidth >750) {
+  //            docEl.clientWidth = 750
+  //          }
+            docEl.style.fontSize = 100 * ((docEl.clientWidth>750 ? 750 : docEl.clientWidth) / 750) + 'px';
+          };
+  
+        //绑定浏览器缩放与加载时间
+        window.addEventListener(resizeEvt, recalc, false);
+        document.addEventListener('DOMContentLoaded', recalc, false);
+  
+        window.TencentGDT = window.TencentGDT || [];
+      </script>
+      <!--<script src="http://api.map.baidu.com/api?v=2.0&ak=H2pvVGF5HpBpEqAl2tllWfsy"></script>-->
+    </head>
   <body>
     <div id="app"></div>
     <!-- built files will be auto injected -->
