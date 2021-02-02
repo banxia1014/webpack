@@ -5,7 +5,7 @@
 			<!--登录-->
 			<div class="common_box middle" v-show="isJumpLogin">
 				<div class="nav">
-					<!-- <p class="title">{{ isJumpLogin && !isWeixin ? '登录' : '账户密码绑定' }}</p> -->
+					<p class="title">登录</p>
 				</div>
 				<div class="">
 					<ul class="info_area">
